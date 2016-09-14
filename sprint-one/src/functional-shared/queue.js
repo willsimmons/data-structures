@@ -14,7 +14,7 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function(value) {
-
+  this.back++;
 };
 
 queueMethods.dequeue = function() {
