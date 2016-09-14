@@ -9,7 +9,7 @@ var stackMethods = {
   storage: {},
   count: 0,
   push: function(value) {
-
+    this.count++;
   },
   pop: function() {
 
