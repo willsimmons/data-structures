@@ -18,6 +18,9 @@ var stackMethods = {
   },
   pop: function() {
     this.count--;
+    if (this.count < 0) {
+      this.count = 0;
+    }
   },
   size: function() {
     return this.count;
