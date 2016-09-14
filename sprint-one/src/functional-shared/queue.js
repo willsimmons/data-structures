@@ -14,14 +14,17 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function(value) {
+  this.storage[this.back] = value;
   this.back++;
 };
 
 queueMethods.dequeue = function() {
+  var result = this.storage[this.front];
   this.front++;
   if (this.front > this.back) {
     this.front = this.back;
   }
+  return result;
 };
 
 queueMethods.size = function() {
