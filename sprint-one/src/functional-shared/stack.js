@@ -14,6 +14,7 @@ var Stack = function() {
 
 var stackMethods = {
   push: function(value) {
+    this.storage[this.count] = value;
     this.count++;
   },
   pop: function() {
@@ -21,6 +22,7 @@ var stackMethods = {
     if (this.count < 0) {
       this.count = 0;
     }
+    return this.storage[this.count];
   },
   size: function() {
     return this.count;
