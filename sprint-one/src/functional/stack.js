@@ -16,7 +16,6 @@ var Stack = function() {
     if (items < 0) {
       items = 0;
     }
-    console.log(storage);
     return storage[items];
   };
 
