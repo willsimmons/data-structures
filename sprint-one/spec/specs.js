@@ -50,11 +50,8 @@ define([
 
       it('reports a size of 1 after adding two items and removing one', function() {
         stack.push('a');
-        console.log('should be one ', stack.size());
         stack.push('b');
-        console.log('should be two ', stack.size());
         stack.pop();
-        console.log('final size is ', stack.size());
         expect(stack.size()).to.equal(1);
       });
 
