@@ -25,8 +25,8 @@ StackPseudo.prototype.size = function(value) {
 var makeManyStacksPseudoclassical = function() {
   var array = [];
   for (var i = 0; i < 100000; i++) {
-    var stack = new StackPseudo();
-    array.push(stack);
+    var stackpseudo = new StackPseudo();
+    array.push(stackpseudo);
   }
   return array;
 };

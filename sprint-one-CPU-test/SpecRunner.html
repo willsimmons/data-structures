@@ -15,7 +15,18 @@
     </style>
     <script src="../lib/jquery/jquery.js"></script>
     <script src="../lib/underscore/underscore.js"></script>
-    <script>
+
+    <script src="src/functional/stackfunc.js"></script>
+    <script src="src/functional-shared/stackfuncshared.js"></script>
+    <script src="src/prototypal/stackproto.js"></script>
+    <script src="src/pseudoclassical/stack.js"></script>
+
+    <script src="src/functional/queuefunc.js"></script>
+    <script src="src/functional-shared/queuefuncshared.js"></script>
+    <script src="src/prototypal/queueproto.js"></script>
+    <script src="src/pseudoclassical/queue.js"></script>
+
+<!--     <script>
       $(function(){
         $.each(['functional', 'functional-shared', 'prototypal', 'pseudoclassical'], function(i, variant){
           $('<iframe src="' + window.location.toString().replace('.html', 'Section.html?') + variant + '" />').appendTo(document.body);
@@ -25,8 +36,9 @@
           $('iframe').height($(this).height());
         }).trigger('resize');
       });
-    </script>
+    </script> -->
   </head>
   <body>
+  <h1>This is to test the CPU speeds and memory allocations of instantiation patterns!</h1>
   </body>
 </html>

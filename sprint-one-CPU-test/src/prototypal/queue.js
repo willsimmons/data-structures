@@ -31,8 +31,8 @@ queueMethods.size = function() {
 var makeManyQueuePrototypal = function() {
   var array = [];
   for (var i = 0; i < 100000; i++) {
-    var queue = QueueProto();
-    array.push(queue);
+    var queueproto = QueueProto();
+    array.push(queueproto);
   }
   return array;
 };

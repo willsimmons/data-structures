@@ -31,8 +31,8 @@ stackMethods = {
 var makeManyStacksFunctionalShared = function() {
   var array = [];
   for (var i = 0; i < 100000; i++) {
-    var stack = StackFuncShare();
-    array.push(stack);
+    var stackfuncshare = StackFuncShare();
+    array.push(stackfuncshare);
   }
   return array;
 };

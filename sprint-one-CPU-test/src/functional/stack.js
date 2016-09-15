@@ -29,8 +29,8 @@ var StackFunc = function() {
 var makeManyStacksFunctional = function() {
   var array = [];
   for (var i = 0; i < 100000; i++) {
-    var stack = StackFunc();
-    array.push(stack);
+    var stackfunc = StackFunc();
+    array.push(stackfunc);
   }
   return array;
 };
