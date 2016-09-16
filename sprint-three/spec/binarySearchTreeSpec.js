@@ -5,11 +5,15 @@ describe('binarySearchTree', function() {
     binarySearchTree = BinarySearchTree(5);
   });
 
-  it('should have methods named "insert", "contains", "breadthFirstLog"and "depthFirstLog', function() {
+  it('should have methods named "insert", "contains", "breadthFirstLog", "depthFirstLog", "countNodes", "currMaxDepth", computeMinDepth", and "rebalance"', function() {
     expect(binarySearchTree.insert).to.be.a('function');
     expect(binarySearchTree.contains).to.be.a('function');
     expect(binarySearchTree.breadthFirstLog).to.be.a('function');
     expect(binarySearchTree.depthFirstLog).to.be.a('function');
+    expect(binarySearchTree.countNodes).to.be.a('function');
+    expect(binarySearchTree.currMaxDepth).to.be.a('function');
+    expect(binarySearchTree.computeMinDepth).to.be.a('function');
+    expect(binarySearchTree.rebalance).to.be.a('function');
   });
 
   it('should insert values at the correct location in the tree', function() {
@@ -48,6 +52,27 @@ describe('binarySearchTree', function() {
     binarySearchTree.insert(6);
     binarySearchTree.breadthFirstLog(func);
     expect(array).to.eql([5, 2, 7, 3, 6]);
+  });
+
+  // Make your binarySearchTree rebalance as soon as the max depth is more than twice the minimum depth
+
+  it('should rebalance when max depth is more that twice the minimum depth', function() {
+    binarySearchTree.insert(4);
+    binarySearchTree.insert(3);
+    binarySearchTree.insert(2);
+    binarySearchTree.insert(1);
+    binarySearchTree.insert(0);
+    
+    var arrayBefore = [];
+    var funcBefore = function(value) { arrayBefore.push(value); };
+    binarySearchTree.breadthFirstLog(funcBefore);
+    expect(arrayBefore).to.eql([5, 4, 3, 2, 1, 0]);
+    
+    binarySearchTree.insert(-1); // rebalancing should happen here (7 > log 2 (7 + 1)) 
+    var arrayAfter = [];
+    var funcAfter = function(value) { arrayAfter.push(value); };
+    binarySearchTree.breadthFirstLog(funcAfter);
+    expect(arrayAfter).to.eql([2, 0, 4, -1, 1, 3, 5]);
   });
 
 });

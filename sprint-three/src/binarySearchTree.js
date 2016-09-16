@@ -3,6 +3,12 @@ var BinarySearchTree = function(value) {
   bST.value = value;
   bST.left = null;
   bST.right = null;
+
+  bST.parent = null;
+  bST.currCount = 1;
+  bST.leftDepth = 0;
+  bST.rightDepth = 0;
+
   return bST;
 };
 
@@ -10,11 +16,21 @@ var bSTmethods = {};
 
 bSTmethods.insert = function(value) {
   if (value < this.value) {
+    
     if (this.left === null) {
       this.left = BinarySearchTree(value);
+      this.left.parent = this;
+      this.currCount++;
+      var currParent = this.parent;
+      while (currParent !== null) {
+        currParent.currCount++;
+        currParent = currParent.parent;
+        // deal with depth
+      }
     } else {
       this.left.insert(value);
     }
+
   } else {
     if (this.right === null) {
       this.right = BinarySearchTree(value);
@@ -69,6 +85,22 @@ bSTmethods.breadthFirstLog = function(cb) {
     }
   }
 };
+
+bSTmethods.currMaxDepth = function() {
+  return this.leftDepth > this.rightDepth ? this.leftDepth : this.rightDepth;
+};
+
+bSTmethods.computeMinDepth = function() {
+  var count = this.currCount;
+  return Math.ceil(Math.log2(count + 1));
+};
+
+bSTmethods.rebalance = function() {
+
+};
+
+
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */
