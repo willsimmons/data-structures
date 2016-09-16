@@ -12,17 +12,17 @@ HashTable.prototype.insert = function(k, v) {
   this._keys.push(k);
   var index = getIndexBelowMaxForKey(k, this._limit);
   if (this._storage.get(index) !== undefined) {
-    while(this._storage.get(index) !== undefined) {
-      index = index + 1;
+    while (this._storage.get(index) !== undefined) {
+      index = (index + 1) % this._limit;
     }
     this._collisions[k] = index;
   }
   this._count++;
+  this._storage.set(index, v);
   // To prevent excessive collisions, make your hashTable double in size as soon as 75 percent of the spaces have been filled
-  if (this.percentfull() > 75) {
+  if (this.percentfull() >= 75) {
     this.resize('expand');
   }
-  this._storage.set(index, v);
 };
 
 HashTable.prototype.retrieve = function(k) {
@@ -60,10 +60,11 @@ HashTable.prototype.resize = function(expandOrContract) {
   this._storage = LimitedArray(this._limit);
 
   var oldIndex, newIndex, currValue;
+  var that = this;
   this._keys.forEach(function(key) {
     oldIndex = getIndexBelowMaxForKey(key, oldLimit);
     currValue = oldStorage.get(oldIndex);
-    newIndex = getIndexBelowMaxForKey(key, this._limit);
+    newIndex = getIndexBelowMaxForKey(key, that._limit);
     if (that._storage.get(newIndex) !== undefined) {
       while (that._storage.get(newIndex) !== undefined) {
         newIndex = newIndex + 1;
