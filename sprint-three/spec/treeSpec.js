@@ -5,9 +5,10 @@ describe('expandedTree', function() {
     tree = Tree(8);
   });
 
-  it('should have methods named "addChild" and "contains", and a property named "value"', function() {
+  it('should have methods named "addChild", "contains", "traverse", and a property named "value"', function() {
     expect(tree.addChild).to.be.a('function');
     expect(tree.contains).to.be.a('function');
+    expect(tree.traverse).to.be.a('function');
     expect(tree.hasOwnProperty('value')).to.equal(true);
   });
 
@@ -60,4 +61,15 @@ describe('expandedTree', function() {
     expect(child.parent).to.equal(null);
   });
 
+// Implement a .traverse() method on your tree. Your .traverse() should accept a callback and execute it on every value contained in the tree
+  it('should correctly traverse the tree and run a callback on each value', function() {
+    tree.addChild(5);
+    tree.addChild(6);
+    tree.addChild(7);
+    var array = [];
+    tree.traverse(function(value) {
+      array.push(value);
+    });
+    expect(array).to.eql([8, 5, 6, 7]);
+  });
 });

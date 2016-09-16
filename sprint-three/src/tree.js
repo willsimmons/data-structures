@@ -8,6 +8,7 @@ var Tree = function(value) {
   newTree.addChild = treeMethods.addChild;
   newTree.contains = treeMethods.contains;
   newTree.removeFromParent = treeMethods.removeFromParent;
+  newTree.traverse = treeMethods.traverse;
 
   return newTree;
 };
@@ -37,6 +38,14 @@ treeMethods.removeFromParent = function() {
   this.parent = null;
 };
 
+treeMethods.traverse = function(callback) {
+  callback(this.value);
+  this.children.forEach(function(child) {
+    child.traverse(callback);
+  });
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
