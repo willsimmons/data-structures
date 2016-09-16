@@ -12,14 +12,12 @@ setPrototype.add = function(item) {
   // if (this._storage.indexOf(item) === -1) {
   //   this._storage.push(item);
   // }
-  var key = JSON.stringify(item);
-  this.insert(key, item);
+  this.insert(item, item);
 };
 
 setPrototype.contains = function(item) {
   // return this._storage.indexOf(item) !== -1;
-  var key = JSON.stringify(item);
-  return this.retrieve(key) !== undefined;
+  return this.retrieve(item) !== undefined;
 };
 
 // uses the remove method from HashTable
@@ -34,3 +32,5 @@ setPrototype.contains = function(item) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+// Amended to allow taking in of numbers, arrays, objects through hash table

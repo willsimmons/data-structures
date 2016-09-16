@@ -9,6 +9,7 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
+  k = JSON.stringify(k);
   this._keys.push(k);
   var index = getIndexBelowMaxForKey(k, this._limit);
   if (this._storage.get(index) !== undefined) {
@@ -26,6 +27,7 @@ HashTable.prototype.insert = function(k, v) {
 };
 
 HashTable.prototype.retrieve = function(k) {
+  k = JSON.stringify(k);
   var index = this._collisions[k] !== undefined ? 
                 this._collisions[k] :
                 getIndexBelowMaxForKey(k, this._limit);
@@ -33,6 +35,7 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
+  k = JSON.stringify(k);
   var keyindex = this._keys.indexOf(k);
   this._keys.splice(k, 1);
   var index = this._collisions[k] !== undefined ? 
