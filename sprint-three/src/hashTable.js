@@ -1,26 +1,22 @@
-
-
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
-  this._collisions = {};
-  this._keys = [];
   this._count = 0;
 };
 
 HashTable.prototype.insert = function(k, v) {
   k = JSON.stringify(k);
-  this._keys.push(k);
+
   var index = getIndexBelowMaxForKey(k, this._limit);
-  if (this._storage.get(index) !== undefined) {
-    while (this._storage.get(index) !== undefined) {
-      index = (index + 1) % this._limit;
-    }
-    this._collisions[k] = index;
+  var block = [k, v];
+  if (this._storage.get(index) === undefined) {
+    this._storage.set(index, [block]);
+  } else {
+    var blocks = this._storage.get(index);
+    blocks.push(block);
+    this._storage.set(index, blocks);
   }
   this._count++;
-  this._storage.set(index, v);
-  // To prevent excessive collisions, make your hashTable double in size as soon as 75 percent of the spaces have been filled
   if (this.percentfull() >= 75) {
     this.resize('expand');
   }
@@ -28,22 +24,32 @@ HashTable.prototype.insert = function(k, v) {
 
 HashTable.prototype.retrieve = function(k) {
   k = JSON.stringify(k);
-  var index = this._collisions[k] !== undefined ? 
-                this._collisions[k] :
-                getIndexBelowMaxForKey(k, this._limit);
-  return this._storage.get(index);
+
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var blocks = this._storage.get(index);
+  var answer = undefined;
+  if (blocks !== undefined) {
+    blocks.forEach(function(block) {
+      if (block[0] === k) {
+        answer = block[1];
+      }
+    });
+  }
+
+  return answer;
 };
 
 HashTable.prototype.remove = function(k) {
   k = JSON.stringify(k);
-  var keyindex = this._keys.indexOf(k);
-  this._keys.splice(k, 1);
-  var index = this._collisions[k] !== undefined ? 
-                this._collisions[k] :
-                getIndexBelowMaxForKey(k, this._limit);
-  this._storage.set(index, undefined);
+
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var blocks = this._storage.get(index);
+  blocks.forEach(function(block, ind) {
+    if (block[0] === k) {
+      blocks.splice(ind, 1);
+    }
+  });
   this._count--;
-  // To save space, make sure the hashTable halves in size when space usage falls below 25 percent
   if (this.percentfull() < 25) {
     this.resize('contract');
   }
@@ -61,20 +67,26 @@ HashTable.prototype.resize = function(expandOrContract) {
   }
 
   this._storage = LimitedArray(this._limit);
+  this._count = 0;
 
-  var oldIndex, newIndex, currValue;
+  var newIndex, currKey, currValue;
   var that = this;
-  this._keys.forEach(function(key) {
-    oldIndex = getIndexBelowMaxForKey(key, oldLimit);
-    currValue = oldStorage.get(oldIndex);
-    newIndex = getIndexBelowMaxForKey(key, that._limit);
-    if (that._storage.get(newIndex) !== undefined) {
-      while (that._storage.get(newIndex) !== undefined) {
-        newIndex = newIndex + 1;
-      }
-      that._collisions[key] = newIndex;
+
+  oldStorage.each(function(blocks) {
+    if (blocks !== undefined) {
+      blocks.forEach(function(block) {
+        // ugly fix for insertion without JSON.stringify
+        newIndex = getIndexBelowMaxForKey(block[0], that._limit);
+        if (that._storage.get(newIndex) === undefined) {
+          that._storage.set(newIndex, [block]);
+        } else {
+          var newBlocks = that._storage.get(newIndex);
+          newBlocks.push(block);
+          that._storage.set(newIndex, newBlocks);
+        }
+        that._count++;
+      });
     }
-    that._storage.set(newIndex, currValue);
   });
 };
 
