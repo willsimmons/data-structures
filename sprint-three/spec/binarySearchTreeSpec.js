@@ -5,12 +5,11 @@ describe('binarySearchTree', function() {
     binarySearchTree = BinarySearchTree(5);
   });
 
-  it('should have methods named "insert", "contains", "breadthFirstLog", "depthFirstLog", "countNodes", "currMaxDepth", computeMinDepth", and "rebalance"', function() {
+  it('should have methods named "insert", "contains", "breadthFirstLog", "depthFirstLog",  "currMaxDepth", computeMinDepth", and "rebalance"', function() {
     expect(binarySearchTree.insert).to.be.a('function');
     expect(binarySearchTree.contains).to.be.a('function');
     expect(binarySearchTree.breadthFirstLog).to.be.a('function');
     expect(binarySearchTree.depthFirstLog).to.be.a('function');
-    expect(binarySearchTree.countNodes).to.be.a('function');
     expect(binarySearchTree.currMaxDepth).to.be.a('function');
     expect(binarySearchTree.computeMinDepth).to.be.a('function');
     expect(binarySearchTree.rebalance).to.be.a('function');
@@ -72,6 +71,7 @@ describe('binarySearchTree', function() {
     var arrayAfter = [];
     var funcAfter = function(value) { arrayAfter.push(value); };
     binarySearchTree.breadthFirstLog(funcAfter);
+    console.log(arrayAfter);
     expect(arrayAfter).to.eql([2, 0, 4, -1, 1, 3, 5]);
   });
 

@@ -3,12 +3,8 @@ var BinarySearchTree = function(value) {
   bST.value = value;
   bST.left = null;
   bST.right = null;
-
   bST.parent = null;
-  bST.currCount = 1;
-  bST.leftDepth = 0;
-  bST.rightDepth = 0;
-
+  bST.count = 1;
   return bST;
 };
 
@@ -16,24 +12,27 @@ var bSTmethods = {};
 
 bSTmethods.insert = function(value) {
   if (value < this.value) {
-    
     if (this.left === null) {
       this.left = BinarySearchTree(value);
       this.left.parent = this;
-      this.currCount++;
-      var currParent = this.parent;
-      while (currParent !== null) {
-        currParent.currCount++;
-        currParent = currParent.parent;
-        // deal with depth
-      }
+      this.left.atCount();
+      if (this.left.needsRebalancing()) {
+        var head = this.findHead();
+        head.rebalance();
+      } 
     } else {
+      //for the first node
       this.left.insert(value);
     }
-
   } else {
     if (this.right === null) {
       this.right = BinarySearchTree(value);
+      this.right.parent = this;
+      this.right.atCount();
+      if (this.right.needsRebalancing()) {
+        var head = this.findHead();
+        head.rebalance();
+      }
     } else {
       this.right.insert(value);
     }
@@ -96,7 +95,71 @@ bSTmethods.computeMinDepth = function() {
 };
 
 bSTmethods.rebalance = function() {
+  var rebalancer = function(node) {
+    var result = [node.value];
+    if (node.left !== null) {
+      result = rebalancer(node.left).concat(result);
+    }
+    if (node.right !== null) {
+      result = result.concat(rebalancer(right));
+    }
+    return result;
+  };
+  var arr = rebalancer(this);
+  var insertSortedArray = function(array, node) {
+    if (array.length === 0) {
+      return;
+    } else {
+      var centerIndex = Math.floor(array.length / 2); 
+      var centerValue = array[centerIndex];
+      node.value = centerValue;
+      var leftArray = array.slice(0, centerIndex);
+      var rightArray = array.slice(centerIndex + 1);
+      if (leftArray.length !== 0) {
+        node.left = BinarySearchTree();
+        node.left.parent = node;
+        insertSortedArray(leftArray, node.left);
+      }
+      if (rightArray.length !== 0) {
+        node.right = BinarySearchTree();
+        node.right.parent = node;
+        insertSortedArray(rightArray, node.right);
+      }
+    }
+  };
+  insertSortedArray(arr, this);
+};
 
+bSTmethods.needsRebalancing = function() {
+  var depth = 1;
+  var currNode = this;
+  var nodeCount;
+  while (currNode.parent !== null) {
+    depth ++;   
+    currNode = currNode.parent;  
+  }
+  nodeCount = currNode.count;   
+  var mathStuff = (depth * 1.0 / Math.ceil(Math.log2(nodeCount + 1)));
+  var answer = mathStuff > 2;
+  return answer;
+};
+
+bSTmethods.findHead = function() {
+  var currNode = this;
+  while (currNode !== null) {
+    currNode = currNode.parent;
+    if (currNode.parent === null) {
+      return currNode;  
+    }
+  }
+};   
+
+bSTmethods.atCount = function() {
+  var parent = this.parent;
+  while (parent !== null) {
+    parent.count++;
+    parent = parent.parent;
+  }
 };
 
 

@@ -3,7 +3,7 @@
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
-  this._collisions = {};
+  // this._collisions = {};
 };
 
 HashTable.prototype.insert = function(k, v) {
