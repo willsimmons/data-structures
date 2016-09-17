@@ -27,9 +27,16 @@ describe('bloomFilter', function() {
   
   it('should return false for uninserted strings', function() {
     var data = ['Tony Tan', 'Will Simmons', 'JP Zivalich', 'Cash Weaver'];
+    var counter = 1;
     bloomFilter.insert(data[0]);
     expect(bloomFilter.check(data[1])).to.be.false;
     expect(bloomFilter.check(data[2])).to.be.false;
+    for (var i = 0; i < 10000; i++) {
+      if (bloomFilter.check(data[1])) {
+        console.log('false positive');
+      }
+    }
+    console.log(counter / 10000);
   });
 
 });
