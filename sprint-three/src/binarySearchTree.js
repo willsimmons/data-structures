@@ -118,11 +118,13 @@ bSTmethods.rebalance = function() {
       if (leftArray.length !== 0) {
         node.left = BinarySearchTree();
         node.left.parent = node;
+        node.left.atCount();
         insertSortedArray(leftArray, node.left);
       }
       if (rightArray.length !== 0) {
         node.right = BinarySearchTree();
         node.right.parent = node;
+        node.right.atCount();
         insertSortedArray(rightArray, node.right);
       }
     }
